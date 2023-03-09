@@ -13,8 +13,11 @@ def filterout(df, column, value):
     return df[df[column] != value]
 
 
-def get_common_dates(df_list):
-    common_dates = df_list[0].index
-    for df in df_list[1:]:
-        common_dates = common_dates.intersection(df.index)
+def get_common_dates(df_list, filenames):
+    benchmark = df_list[0]['DATE'].tolist()
+    common_dates = {fn: [] for fn in filenames}
+    i = 0
+    for df in df_list:
+        common_dates[filenames[i]] = df['DATE'].isin(benchmark)
+        i += 1
     return common_dates
